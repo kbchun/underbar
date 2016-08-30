@@ -381,6 +381,49 @@
   // of that string. For example, _.sortBy(people, 'name') should sort
   // an array of people by their name.
   _.sortBy = function(collection, iterator) {
+    var sort = function(arr) {
+      // if (typeof arr[0] === 'number') {
+      var sorted = [];
+      var notNumbers = [];
+      var min;
+      for (var i = 0, len = arr.length; i < len; i++) {
+        min = Math.min.apply(Math, arr);
+        if (isNaN(min)) {
+          min = undefined;
+          notNumbers.push(min);
+        } else {
+          sorted.push(min);
+        }
+        arr.splice(arr.indexOf(min), 1);
+      }
+      // }
+      return sorted.concat(notNumbers);
+    };
+
+    var property;
+    var results = [];
+    
+//     if (typeof iterator === 'string') {
+//       property = sort(invoke(collection, iterator));
+      
+//     } else {
+      property = sort(_.map(collection, function(item) {
+        return iterator(item);
+      }));
+      if (_.some(collection, function(item) { return typeof item === "number";})) {
+        return property;
+      } else {
+        for (var j = 0; j < property.length; j++) {
+          for (var obj in collection) {
+            if (_.contains(collection[obj], property[j])) {
+              results.push(collection[obj]);
+            }
+          }
+        }
+      }
+      return results;
+//     }
+
   };
 
   // Zip together two or more arrays with elements of the same index
