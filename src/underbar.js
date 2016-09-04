@@ -441,13 +441,13 @@
       return obj;
     });
     var result = [];
-    var exists = [];
     for (var i = 0; i < arrays[0].length; i++) {
       var target = arrays[0][i];
+      var exists = false;
       for (var j = 1; j < arrays.length; j++) {
-        exists.push(_.contains(arrays[j], target));
+        exists = _.contains(arrays[j], target);
       }
-      if (!_.contains(exists, false)) {
+      if (exists) {
         result.push(target);
       }
     }
