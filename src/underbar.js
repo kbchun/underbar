@@ -457,6 +457,18 @@
   // Take the difference between one array and a number of other arrays.
   // Only the elements present in just the first array will remain.
   _.difference = function(array) {
+    var original = Array.prototype.shift.apply(arguments);
+    var compare = _.map(arguments, function(obj) {
+      return obj;
+    });
+    var overlap = _.intersection(original, _.flatten(compare));
+    var result = [];
+    for (var i = 0; i < original.length; i++) {
+      if (!_.contains(overlap, original[i])) {
+        result.push(original[i]);
+      }
+    }
+    return result;
   };
 
   // Returns a function, that, when invoked, will only be triggered at most once
