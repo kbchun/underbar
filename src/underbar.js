@@ -477,5 +477,15 @@
   //
   // Note: This is difficult! It may take a while to implement.
   _.throttle = function(func, wait) {
+    var lastCalled;
+    return function() {
+      var dateObj = new Date();
+      var currentTime = dateObj.getTime();
+      var timePassed = currentTime - lastCalled;
+      if (typeof lastCalled !== 'number' || timePassed >= wait) {
+        lastCalled = dateObj.getTime();
+        return func.apply(this, arguments);
+      }
+    };
   };
 }());
